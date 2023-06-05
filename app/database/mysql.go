@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/app/config"
+	teamdata "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/team/data"
+	userdata "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user/data"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -19,4 +21,8 @@ func InitDBMysql(cfg *config.AppConfig) *gorm.DB {
 		panic(err)
 	}
 	return db
+}
+
+func InitialMigration(db *gorm.DB) {
+	db.AutoMigrate(&teamdata.Team{}, &userdata.User{})
 }
