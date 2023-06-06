@@ -7,6 +7,11 @@ COPY . .
 RUN go mod tidy
 RUN go build -o main .
 
-EXPOSE $PORT
+EXPOSE $JWT_KEY
+EXPOSE $DBUSER
+EXPOSE $DBPASS
+EXPOSE $DBHOST
+EXPOSE $DBPORT
+EXPOSE $DBNAME
 
 CMD [ "./main" ]
