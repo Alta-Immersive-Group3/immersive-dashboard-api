@@ -35,11 +35,6 @@ func (handler *UserHandler) Login(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("login success", map[string]any{
-		"id":    dataLogin.Id,
-		"email": dataLogin.Email,
-		"token": token,
-		"role":  dataLogin.Role,
-	}))
-
+	response := CoreToAuthResponse(dataLogin, token)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("login successful", response))
 }
