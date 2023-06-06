@@ -8,7 +8,7 @@ type AuthRequest struct {
 }
 
 type UserRequest struct {
-	FullName string `json:"name" form:"name"`
+	FullName string `json:"full_name" form:"full_name"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 	Role     string `json:"role" form:"role"`
