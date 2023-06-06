@@ -35,11 +35,31 @@ func (repo *userQuery) Login(email string, password string) (user.Core, string, 
 		return user.Core{}, "", errors.New("login failed, wrong password")
 	}
 
-	token, errToken := middlewares.CreateToken(int(userGorm.ID))
+	token, errToken := middlewares.CreateToken(int(userGorm.Id))
 	if errToken != nil {
 		return user.Core{}, "", errToken
 	}
 
 	dataCore := ModelToCore(userGorm)
 	return dataCore, token, nil
+}
+
+func (repo *userQuery) Insert(input user.Core) error {
+	hashedPassword, errHash := helper.HashPassword(input.Password)
+	if errHash != nil {
+		return errors.New("error hash password")
+	}
+	userInputGorm := CoreToModel(input)
+	userInputGorm.Password = hashedPassword
+
+	tx := repo.db.Create(&userInputGorm)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return errors.New("insert failed, row affected = 0")
+	}
+
+	return nil
 }
