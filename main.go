@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	cfg := config.InitConfig()
 	dbMysql := database.InitDBMysql(cfg)
 

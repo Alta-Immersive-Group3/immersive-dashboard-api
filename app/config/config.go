@@ -2,11 +2,8 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strconv"
-
-	"github.com/spf13/viper"
 )
 
 var (
@@ -57,22 +54,12 @@ func ReadEnv() *AppConfig {
 	}
 
 	if isRead {
-		viper.AddConfigPath(".")
-		viper.SetConfigName("local")
-		viper.SetConfigType("env")
-
-		err := viper.ReadInConfig()
-		if err != nil {
-			log.Println("error read config : ", err.Error())
-			return nil
-		}
-
-		app.jwtKey = viper.Get("JWT_KEY").(string)
-		app.DB_USERNAME = viper.Get("DBUSER").(string)
-		app.DB_PASSWORD = viper.Get("DBPASS").(string)
-		app.DB_HOSTNAME = viper.Get("DBHOST").(string)
-		app.DB_PORT, _ = strconv.Atoi(viper.Get("DBPORT").(string))
-		app.DB_NAME = viper.Get("DBNAME").(string)
+		app.jwtKey = os.Getenv("JWT_KEY")
+		app.DB_USERNAME = os.Getenv("DBUSER")
+		app.DB_PASSWORD = os.Getenv("DBPASS")
+		app.DB_HOSTNAME = os.Getenv("DBHOST")
+		app.DB_PORT, _ = strconv.Atoi(os.Getenv("DBPORT"))
+		app.DB_NAME = os.Getenv("DBNAME")
 	}
 
 	SECRET_JWT = app.jwtKey
