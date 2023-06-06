@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/app/middlewares"
 	_userData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user/data"
 	_userHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user/handler"
 	_userService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user/service"
@@ -15,5 +16,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	userHandlerAPI := _userHandler.New(userService)
 
 	e.POST("/login", userHandlerAPI.Login)
-	e.POST("/users", userHandlerAPI.CreateUser)
+	e.POST("/users", userHandlerAPI.CreateUser, middlewares.JWTMiddleware())
 }
