@@ -1,17 +1,13 @@
-FROM golang:alpine
-ENV CGO_ENABLED=0
+FROM golang:1.20-alpine
 
-WORKDIR /api
-COPY . .
+RUN mkdir /app
+
+WORKDIR /app
+
+COPY ./ /app
 
 RUN go mod tidy
-RUN go build -o main .
 
-EXPOSE $JWT_KEY
-EXPOSE $DBUSER
-EXPOSE $DBPASS
-EXPOSE $DBHOST
-EXPOSE $DBPORT
-EXPOSE $DBNAME
+RUN go build -o api
 
-CMD [ "./main" ]
+CMD ["./api"]
