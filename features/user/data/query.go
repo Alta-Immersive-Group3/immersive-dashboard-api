@@ -84,17 +84,13 @@ func (repo *userQuery) SelectAll() ([]user.Core, error) {
 }
 
 func (repo *userQuery) SelectById(id uint64) (user.Core, error) {
-	var userData User
-	tx := repo.db.Where("id = ?", id).Find(&userData)
+	var userGorm User
+	tx := repo.db.First(&userGorm, id)
 	if tx.Error != nil {
-		return user.Core{}, tx.Error
-	}
-
-	if tx.RowsAffected == 0 {
 		return user.Core{}, errors.New("error user not found")
 	}
 
-	userCore := ModelToCore(userData)
+	userCore := ModelToCore(userGorm)
 	return userCore, nil
 }
 
@@ -124,7 +120,12 @@ func (repo *userQuery) UpdateById(id uint64, input user.Core) error {
 
 func (repo *userQuery) DeleteById(id uint64) error {
 	var userGorm User
-	tx := repo.db.Delete(&userGorm, id)
+	tx := repo.db.First(&userGorm, id)
+	if tx.Error != nil {
+		return errors.New("error user not found")
+	}
+
+	tx = repo.db.Delete(&userGorm, id)
 	if tx.Error != nil {
 		return errors.New(tx.Error.Error() + "failed to delete user")
 	}
