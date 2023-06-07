@@ -56,7 +56,7 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 		if strings.Contains(err.Error(), "validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 		} else {
-			return c.JSON(http.StatusInternalServerError, helper.FailedResponse("error insert data"+err.Error()))
+			return c.JSON(http.StatusInternalServerError, helper.FailedResponse("error insert data, "+err.Error()))
 		}
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success insert data"))
@@ -82,7 +82,7 @@ func (handler *UserHandler) GetUserById(c echo.Context) error {
 
 	result, err := handler.userService.GetById(userId)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data, "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data , "+err.Error()))
 	}
 
 	userResponse := CoreToGetUserResponse(result)
