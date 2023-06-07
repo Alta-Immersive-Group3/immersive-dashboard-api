@@ -79,6 +79,17 @@ func (repo *userQuery) SelectAll() ([]user.Core, error) {
 	return usersCoreAll, nil
 }
 
+func (repo *userQuery) SelectById(id uint64) (user.Core, error) {
+	var userData User
+	tx := repo.db.Where("id = ? AND is_deleted = ?", id, false).Find(&userData)
+	if tx.Error != nil {
+		return user.Core{}, tx.Error
+	}
+
+	userCore := ModelToCore(userData)
+	return userCore, nil
+}
+
 func (repo *userQuery) UpdateById(id uint64, input user.Core) error {
 	var userGorm User
 	tx := repo.db.First(&userGorm, id)
