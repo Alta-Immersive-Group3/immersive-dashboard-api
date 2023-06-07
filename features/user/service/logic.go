@@ -35,3 +35,11 @@ func (service *userService) Create(input user.Core) error {
 	errInsert := service.userData.Insert(input)
 	return errInsert
 }
+
+func (service *userService) GetAll() ([]user.Core, error) {
+	data, err := service.userData.SelectAll()
+	if err != nil {
+		return nil, err
+	}
+	return data, err
+}

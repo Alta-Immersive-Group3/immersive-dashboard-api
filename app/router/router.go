@@ -20,6 +20,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 
 	e.POST("/login", userHandlerAPI.Login)
 	e.POST("/users", userHandlerAPI.CreateUser, middlewares.JWTMiddleware())
+	e.GET("/users", userHandlerAPI.GetAllUser, middlewares.JWTMiddleware())
 
 	teamData := _teamData.New(db)
 	teamService := _teamService.New(teamData)

@@ -12,14 +12,12 @@ type AuthResponse struct {
 }
 
 type UserResponse struct {
-	Id        uint   `json:"id" form:"id"`
-	FullName  string `json:"name" form:"name"`
-	Email     string `json:"email" form:"email"`
-	Password  string `json:"password" form:"password"`
-	Role      string `json:"role" form:"role"`
-	IdTeam    uint64 `json:"id_team" form:"id_team"`
-	Status    bool   `json:"status" form:"status"`
-	IsDeleted bool   `json:"is_deleted" form:"is_deleted"`
+	Id       uint64 `json:"id" form:"id"`
+	FullName string `json:"name" form:"name"`
+	Email    string `json:"email" form:"email"`
+	Role     string `json:"role" form:"role"`
+	IdTeam   uint64 `json:"id_team" form:"id_team"`
+	Status   bool   `json:"status" form:"status"`
 }
 
 func CoreToAuthResponse(user user.Core, jwtToken string) AuthResponse {
@@ -28,5 +26,16 @@ func CoreToAuthResponse(user user.Core, jwtToken string) AuthResponse {
 		Email: user.Email,
 		Token: jwtToken,
 		Role:  user.Role,
+	}
+}
+
+func CoreToUserResponse(user user.Core) UserResponse {
+	return UserResponse{
+		Id:       user.Id,
+		FullName: user.FullName,
+		Email:    user.Email,
+		Role:     user.Role,
+		IdTeam:   user.IdTeam,
+		Status:   user.Status,
 	}
 }

@@ -59,3 +59,20 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success insert data"))
 }
+
+func (handler *UserHandler) GetAllUser(c echo.Context) error {
+	// memanggil func di repositories
+	results, err := handler.userService.GetAll()
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+	}
+
+	var usersResponse []UserResponse
+	for _, value := range results {
+		usersResponse = append(usersResponse, CoreToUserResponse(value))
+	}
+
+	// response ketika berhasil
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", usersResponse))
+}
