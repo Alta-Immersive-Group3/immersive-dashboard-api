@@ -46,10 +46,6 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error bind data"))
 	}
 
-	if !isAdmin(userInput.Role) {
-		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("error, unauthorized"))
-	}
-
 	userCore := UserRequestToCore(userInput)
 	err := handler.userService.Create(userCore)
 	if err != nil {
@@ -60,8 +56,4 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 		}
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success insert data"))
-}
-
-func isAdmin(role string) bool {
-	return role == "admin"
 }
