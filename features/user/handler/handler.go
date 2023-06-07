@@ -65,7 +65,7 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 func (handler *UserHandler) GetAllUser(c echo.Context) error {
 	results, err := handler.userService.GetAll()
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data, "+err.Error()))
 	}
 
 	var usersResponse []UserResponse
@@ -82,7 +82,7 @@ func (handler *UserHandler) GetUserById(c echo.Context) error {
 
 	result, err := handler.userService.GetById(userId)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data, "+err.Error()))
 	}
 
 	userResponse := CoreToGetUserResponse(result)
