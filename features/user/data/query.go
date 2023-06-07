@@ -71,6 +71,10 @@ func (repo *userQuery) SelectAll() ([]user.Core, error) {
 		return nil, tx.Error
 	}
 
+	if tx.RowsAffected == 0 {
+		return nil, errors.New("error users not found")
+	}
+
 	var usersCoreAll []user.Core
 	for _, value := range usersData {
 		userCore := ModelToCore(value)
@@ -86,6 +90,10 @@ func (repo *userQuery) SelectById(id uint64) (user.Core, error) {
 		return user.Core{}, tx.Error
 	}
 
+	if tx.RowsAffected == 0 {
+		return user.Core{}, errors.New("error users not found")
+	}
+
 	userCore := ModelToCore(userData)
 	return userCore, nil
 }
@@ -94,7 +102,7 @@ func (repo *userQuery) UpdateById(id uint64, input user.Core) error {
 	var userGorm User
 	tx := repo.db.First(&userGorm, id)
 	if tx.Error != nil {
-		return errors.New("error, user not found")
+		return errors.New("error user not found")
 	}
 
 	userInputGorm := CoreToModel(input)
@@ -118,7 +126,7 @@ func (repo *userQuery) DeleteById(id uint64) error {
 	var userGorm User
 	tx := repo.db.First(&userGorm, id)
 	if tx.Error != nil {
-		return errors.New("error, user not found")
+		return errors.New("error user not found")
 	}
 
 	tx = repo.db.Model(&userGorm).Where("id = ?", id).Update("is_deleted", true)
