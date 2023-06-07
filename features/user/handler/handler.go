@@ -30,6 +30,8 @@ func (handler *UserHandler) Login(c echo.Context) error {
 	if err != nil {
 		if strings.Contains(err.Error(), "login failed") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
+		} else if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 		} else {
 			return c.JSON(http.StatusInternalServerError, helper.FailedResponse("error login, internal server error"))
 		}
