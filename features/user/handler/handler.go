@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/app/middlewares"
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user"
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/helper"
 	"github.com/labstack/echo/v4"
@@ -76,6 +77,25 @@ func (handler *UserHandler) GetAllUser(c echo.Context) error {
 
 	// response ketika berhasil
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", usersResponse))
+}
+
+func (handler *UserHandler) UpdateUserProfile(c echo.Context) error {
+	paramId := middlewares.ExtractTokenUserId(c)
+	userId := uint64(paramId)
+
+	userInput := UserRequest{}
+	errBind := c.Bind(&userInput)
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error bind data"))
+	}
+
+	userCore := UserRequestToCore(userInput)
+	err := handler.userService.UpdateById(userId, userCore)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data "+err.Error()))
+	}
+	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
 }
 
 func (handler *UserHandler) UpdateUserById(c echo.Context) error {
