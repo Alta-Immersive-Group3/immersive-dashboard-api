@@ -13,6 +13,7 @@ type UserRequest struct {
 	Password string `json:"password" form:"password"`
 	Role     string `json:"role" form:"role"`
 	IdTeam   uint64 `json:"id_team" form:"id_team"`
+	Status   bool   `json:"status" form:"status"`
 }
 
 func UserRequestToCore(userRequest UserRequest) user.Core {
@@ -22,5 +23,6 @@ func UserRequestToCore(userRequest UserRequest) user.Core {
 		Password: userRequest.Password,
 		Role:     userRequest.Role,
 		IdTeam:   userRequest.IdTeam,
+		Status:   userRequest.Status,
 	}
 }

@@ -78,3 +78,27 @@ func (repo *userQuery) SelectAll() ([]user.Core, error) {
 	}
 	return usersCoreAll, nil
 }
+
+func (repo *userQuery) UpdateById(id uint64, input user.Core) error {
+	var userGorm User
+	tx := repo.db.First(&userGorm, id)
+	if tx.Error != nil {
+		return errors.New("error, user not found")
+	}
+
+	userInputGorm := CoreToModel(input)
+	if userInputGorm.Password != "" {
+		hashedPassword, errHash := helper.HashPassword(userInputGorm.Password)
+		if errHash != nil {
+			return errors.New("error hash password")
+		}
+		userInputGorm.Password = hashedPassword
+	}
+
+	tx = repo.db.Model(&userGorm).Updates(userInputGorm)
+	if tx.Error != nil {
+		return errors.New(tx.Error.Error() + "failed to update user")
+	}
+
+	return nil
+}

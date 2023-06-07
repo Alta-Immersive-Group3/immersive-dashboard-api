@@ -29,7 +29,7 @@ func CoreToAuthResponse(user user.Core, jwtToken string) AuthResponse {
 	}
 }
 
-func CoreToUserResponse(user user.Core) UserResponse {
+func CoreToGetUserResponse(user user.Core) UserResponse {
 	return UserResponse{
 		Id:       user.Id,
 		FullName: user.FullName,
