@@ -63,9 +63,7 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 }
 
 func (handler *UserHandler) GetAllUser(c echo.Context) error {
-	// memanggil func di repositories
 	results, err := handler.userService.GetAll()
-
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
 	}
@@ -75,8 +73,20 @@ func (handler *UserHandler) GetAllUser(c echo.Context) error {
 		usersResponse = append(usersResponse, CoreToGetUserResponse(value))
 	}
 
-	// response ketika berhasil
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", usersResponse))
+}
+
+func (handler *UserHandler) GetUserById(c echo.Context) error {
+	paramId := c.Param("id")
+	userId, _ := strconv.ParseUint(paramId, 10, 64)
+
+	result, err := handler.userService.GetById(userId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+	}
+
+	userResponse := CoreToGetUserResponse(result)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", userResponse))
 }
 
 func (handler *UserHandler) UpdateUserProfile(c echo.Context) error {

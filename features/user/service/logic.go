@@ -44,6 +44,14 @@ func (service *userService) GetAll() ([]user.Core, error) {
 	return data, err
 }
 
+func (service *userService) GetById(id uint64) (user.Core, error) {
+	data, err := service.userData.SelectById(id)
+	if err != nil {
+		return user.Core{}, err
+	}
+	return data, err
+}
+
 func (service *userService) UpdateById(id uint64, input user.Core) error {
 	errUpdate := service.userData.UpdateById(id, input)
 	if errUpdate != nil {
