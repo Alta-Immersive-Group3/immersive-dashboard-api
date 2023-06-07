@@ -10,7 +10,7 @@ import (
 type User struct {
 	Id        uint64    `gorm:"primarykey"`
 	FullName  string    `gorm:"not null"`
-	Email     string    `gorm:"unique,not null"`
+	Email     string    `gorm:"unique;not null"`
 	Password  string    `gorm:"not null"`
 	Role      string    `gorm:"enum('admin', 'user');not null"`
 	IdTeam    uint64    `gorm:"not null"`
