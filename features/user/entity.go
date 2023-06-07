@@ -21,6 +21,7 @@ type UserDataInterface interface {
 	SelectAll() ([]Core, error)
 	SelectById(id uint64) (Core, error)
 	UpdateById(id uint64, input Core) error
+	DeleteById(id uint64) error
 }
 
 type UserServiceInterface interface {
@@ -29,4 +30,5 @@ type UserServiceInterface interface {
 	GetAll() ([]Core, error)
 	GetById(id uint64) (Core, error)
 	UpdateById(id uint64, input Core) error
+	DeleteById(id uint64) error
 }

@@ -126,3 +126,14 @@ func (handler *UserHandler) UpdateUserById(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
 }
+
+func (handler *UserHandler) DeleteUserById(c echo.Context) error {
+	paramId := c.Param("id")
+	userId, _ := strconv.ParseUint(paramId, 10, 64)
+
+	err := handler.userService.DeleteById(userId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error delete data "+err.Error()))
+	}
+	return c.JSON(http.StatusOK, helper.SuccessResponse("success delete data"))
+}

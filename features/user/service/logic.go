@@ -60,3 +60,12 @@ func (service *userService) UpdateById(id uint64, input user.Core) error {
 
 	return nil
 }
+
+func (service *userService) DeleteById(id uint64) error {
+	errUpdate := service.userData.DeleteById(id)
+	if errUpdate != nil {
+		return errUpdate
+	}
+
+	return nil
+}

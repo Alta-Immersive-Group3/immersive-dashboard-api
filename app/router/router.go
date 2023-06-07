@@ -24,6 +24,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	e.GET("/users/:id", userHandlerAPI.GetUserById, middlewares.JWTMiddleware())
 	e.PUT("/users", userHandlerAPI.UpdateUserProfile, middlewares.JWTMiddleware())
 	e.PUT("/users/:id", userHandlerAPI.UpdateUserById, middlewares.JWTMiddleware())
+	e.DELETE("/users/:id", userHandlerAPI.DeleteUserById, middlewares.JWTMiddleware())
 
 	teamData := _teamData.New(db)
 	teamService := _teamService.New(teamData)
