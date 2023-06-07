@@ -10,7 +10,6 @@ type Core struct {
 	Role      string `validate:"required"`
 	IdTeam    uint64 `validate:"required"`
 	Status    bool
-	IsDeleted bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

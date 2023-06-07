@@ -66,7 +66,7 @@ func (repo *userQuery) Insert(input user.Core) error {
 
 func (repo *userQuery) SelectAll() ([]user.Core, error) {
 	var usersData []User
-	tx := repo.db.Where("is_deleted = ?", false).Find(&usersData)
+	tx := repo.db.Find(&usersData)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -85,7 +85,7 @@ func (repo *userQuery) SelectAll() ([]user.Core, error) {
 
 func (repo *userQuery) SelectById(id uint64) (user.Core, error) {
 	var userData User
-	tx := repo.db.Where("id = ? AND is_deleted = ?", id, false).Find(&userData)
+	tx := repo.db.Where("id = ?", id).Find(&userData)
 	if tx.Error != nil {
 		return user.Core{}, tx.Error
 	}
@@ -124,7 +124,7 @@ func (repo *userQuery) UpdateById(id uint64, input user.Core) error {
 
 func (repo *userQuery) DeleteById(id uint64) error {
 	var userGorm User
-	tx := repo.db.First(&userGorm, id)
+	tx := repo.db.Delete(&userGorm, id)
 	if tx.Error != nil {
 		return errors.New("error user not found")
 	}
