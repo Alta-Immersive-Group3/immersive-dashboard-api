@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user"
@@ -70,9 +71,28 @@ func (handler *UserHandler) GetAllUser(c echo.Context) error {
 
 	var usersResponse []UserResponse
 	for _, value := range results {
-		usersResponse = append(usersResponse, CoreToUserResponse(value))
+		usersResponse = append(usersResponse, CoreToGetUserResponse(value))
 	}
 
 	// response ketika berhasil
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", usersResponse))
+}
+
+func (handler *UserHandler) UpdateUserById(c echo.Context) error {
+	paramId := c.Param("id")
+	userId, _ := strconv.ParseUint(paramId, 10, 64)
+
+	userInput := UserRequest{}
+	errBind := c.Bind(&userInput)
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error bind data"))
+	}
+
+	userCore := UserRequestToCore(userInput)
+	err := handler.userService.UpdateById(userId, userCore)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data "+err.Error()))
+	}
+	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
 }
