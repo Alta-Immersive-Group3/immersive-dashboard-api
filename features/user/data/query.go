@@ -63,3 +63,18 @@ func (repo *userQuery) Insert(input user.Core) error {
 
 	return nil
 }
+
+func (repo *userQuery) SelectAll() ([]user.Core, error) {
+	var usersData []User
+	tx := repo.db.Where("is_deleted = ?", false).Find(&usersData)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var usersCoreAll []user.Core
+	for _, value := range usersData {
+		userCore := ModelToCore(value)
+		usersCoreAll = append(usersCoreAll, userCore)
+	}
+	return usersCoreAll, nil
+}
