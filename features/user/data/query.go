@@ -91,7 +91,7 @@ func (repo *userQuery) SelectById(id uint64) (user.Core, error) {
 	}
 
 	if tx.RowsAffected == 0 {
-		return user.Core{}, errors.New("error users not found")
+		return user.Core{}, errors.New("error user not found")
 	}
 
 	userCore := ModelToCore(userData)
