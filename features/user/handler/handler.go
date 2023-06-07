@@ -82,7 +82,7 @@ func (handler *UserHandler) GetUserById(c echo.Context) error {
 
 	result, err := handler.userService.GetById(userId)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data , "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data, "+err.Error()))
 	}
 
 	userResponse := CoreToGetUserResponse(result)
@@ -103,7 +103,7 @@ func (handler *UserHandler) UpdateUserProfile(c echo.Context) error {
 	err := handler.userService.UpdateById(userId, userCore)
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data, "+err.Error()))
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
 }
@@ -122,7 +122,7 @@ func (handler *UserHandler) UpdateUserById(c echo.Context) error {
 	err := handler.userService.UpdateById(userId, userCore)
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data, "+err.Error()))
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
 }
@@ -133,7 +133,7 @@ func (handler *UserHandler) DeleteUserById(c echo.Context) error {
 
 	err := handler.userService.DeleteById(userId)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error delete data "+err.Error()))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error delete data, "+err.Error()))
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("success delete data"))
 }

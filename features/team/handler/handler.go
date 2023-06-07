@@ -22,7 +22,7 @@ func (handler *TeamHandler) GetAllTeam(c echo.Context) error {
 	results, err := handler.teamService.GetAll()
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data"))
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data "+err.Error()))
 	}
 
 	var teamsResponse []TeamResponse
