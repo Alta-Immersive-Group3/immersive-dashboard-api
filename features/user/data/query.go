@@ -126,11 +126,6 @@ func (repo *userQuery) DeleteById(id uint64) error {
 	var userGorm User
 	tx := repo.db.Delete(&userGorm, id)
 	if tx.Error != nil {
-		return errors.New("error user not found")
-	}
-
-	tx = repo.db.Model(&userGorm).Where("id = ?", id).Update("is_deleted", true)
-	if tx.Error != nil {
 		return errors.New(tx.Error.Error() + "failed to delete user")
 	}
 
