@@ -44,24 +44,24 @@ func (repo *userQuery) Login(email string, password string) (user.Core, string, 
 	return dataCore, token, nil
 }
 
-func (repo *userQuery) Insert(input user.Core) error {
+func (repo *userQuery) Insert(input user.Core) (uint64, error) {
 	hashedPassword, errHash := helper.HashPassword(input.Password)
 	if errHash != nil {
-		return errors.New("error hash password")
+		return 0, errors.New("error hash password")
 	}
 	userInputGorm := CoreToModel(input)
 	userInputGorm.Password = hashedPassword
 
 	tx := repo.db.Create(&userInputGorm)
 	if tx.Error != nil {
-		return tx.Error
+		return 0, tx.Error
 	}
 
 	if tx.RowsAffected == 0 {
-		return errors.New("insert failed, row affected = 0")
+		return 0, errors.New("insert failed, row affected = 0")
 	}
 
-	return nil
+	return userInputGorm.Id, nil
 }
 
 func (repo *userQuery) SelectAll() ([]user.Core, error) {
