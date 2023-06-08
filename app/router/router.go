@@ -2,6 +2,9 @@ package router
 
 import (
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/app/middlewares"
+	_classData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/data"
+	_classHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/handler"
+	_classService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/service"
 	_teamData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/team/data"
 	_teamHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/team/handler"
 	_teamService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/team/service"
@@ -31,4 +34,14 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	teamHandlerAPI := _teamHandler.New(teamService)
 
 	e.GET("/teams", teamHandlerAPI.GetAllTeam, middlewares.JWTMiddleware())
+
+	classData := _classData.New(db)
+	classService := _classService.New(classData)
+	classHandlerAPI := _classHandler.New(classService)
+
+	e.POST("/classes", classHandlerAPI.CreateClass, middlewares.JWTMiddleware())
+	e.GET("/classes", classHandlerAPI.GetAllClass, middlewares.JWTMiddleware())
+	e.GET("/classes/:id", classHandlerAPI.GetClassById, middlewares.JWTMiddleware())
+	e.PUT("/classes/:id", classHandlerAPI.UpdateClassById, middlewares.JWTMiddleware())
+	e.DELETE("/classes/:id", classHandlerAPI.DeleteClassById, middlewares.JWTMiddleware())
 }
