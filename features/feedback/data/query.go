@@ -55,7 +55,7 @@ func (repo *feedbackQuery) SelectAll() ([]feedback.Core, error) {
 
 func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core, mentee.Core, error) {
 	var feedbacksData []Feedback
-	tx := repo.db.Where("IdMentee = ?", idMentee).Find(&feedbacksData)
+	tx := repo.db.Where("id_mentee = ?", idMentee).Find(&feedbacksData)
 	if tx.Error != nil {
 		return nil, mentee.Core{}, tx.Error
 	}
@@ -71,7 +71,7 @@ func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core
 	}
 
 	var feedbackData Feedback
-	tx = repo.db.Where("IdMentee = ?", idMentee).Preload("Mentee", "id = ?", idMentee).First(&feedbackData)
+	tx = repo.db.Where("id_mentee = ?", idMentee).Preload("Mentee", "id = ?", idMentee).First(&feedbackData)
 	if tx.Error != nil {
 		return nil, mentee.Core{}, tx.Error
 	}
