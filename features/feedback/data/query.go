@@ -54,11 +54,15 @@ func (repo *feedbackQuery) SelectAll() ([]feedback.Core, error) {
 }
 
 func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core, mentee.Core, error) {
-	var feedbacksData []Feedback
-	tx := repo.db.Where("id_mentee = ?", idMentee).Find(&feedbacksData)
+	var menteeGorm _menteeData.Mentee
+	tx := repo.db.First(&menteeGorm, idMentee)
 	if tx.Error != nil {
-		return nil, mentee.Core{}, tx.Error
+		return nil, mentee.Core{}, errors.New("error mentee not found")
 	}
+
+	menteeCore := _menteeData.ModelToCore(menteeGorm)
+	var feedbacksData []Feedback
+	_ = repo.db.Where("id_mentee = ?", idMentee).Find(&feedbacksData)
 
 	var feedbacksCoreAll []feedback.Core
 	for _, value := range feedbacksData {
@@ -66,13 +70,6 @@ func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core
 		feedbacksCoreAll = append(feedbacksCoreAll, feedbackCore)
 	}
 
-	var feedbackData Feedback
-	tx = repo.db.Where("id_mentee = ?", idMentee).Preload("Mentee", "id = ?", idMentee).First(&feedbackData)
-	if tx.Error != nil {
-		return nil, mentee.Core{}, tx.Error
-	}
-
-	menteeCore := _menteeData.ModelToCore(feedbackData.Mentee)
 	return feedbacksCoreAll, menteeCore, nil
 }
 
