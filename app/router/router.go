@@ -52,5 +52,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	statusService := _statusService.New(statusData)
 	statusHandlerAPI := _statusHandler.New(statusService)
 
-	e.GET("/teams", statusHandlerAPI.GetAllStatus, middlewares.JWTMiddleware())
+	e.GET("/statuses", statusHandlerAPI.GetAllStatus, middlewares.JWTMiddleware())
 }
