@@ -2,11 +2,6 @@ package handler
 
 import "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class"
 
-type AuthRequest struct {
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
-}
-
 type ClassRequest struct {
 	Name         string `json:"name" form:"name"`
 	PIC          uint64 `json:"pic" form:"pic"`

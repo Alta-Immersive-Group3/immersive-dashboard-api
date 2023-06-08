@@ -5,6 +5,9 @@ import (
 	_classData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/data"
 	_classHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/handler"
 	_classService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/service"
+	_menteeData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/data"
+	_menteeHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/handler"
+	_menteeService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/service"
 	_statusData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/status/data"
 	_statusHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/status/handler"
 	_statusService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/status/service"
@@ -53,4 +56,14 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	statusHandlerAPI := _statusHandler.New(statusService)
 
 	e.GET("/statuses", statusHandlerAPI.GetAllStatus, middlewares.JWTMiddleware())
+
+	menteeData := _menteeData.New(db)
+	menteeService := _menteeService.New(menteeData)
+	menteeHandlerAPI := _menteeHandler.New(menteeService)
+
+	e.POST("/mentees", menteeHandlerAPI.CreateMentee, middlewares.JWTMiddleware())
+	e.GET("/mentees", menteeHandlerAPI.GetAllMentee, middlewares.JWTMiddleware())
+	e.GET("/mentees/:id", menteeHandlerAPI.GetMenteeById, middlewares.JWTMiddleware())
+	e.PUT("/mentees/:id", menteeHandlerAPI.UpdateMenteeById, middlewares.JWTMiddleware())
+	e.DELETE("/mentees/:id", menteeHandlerAPI.DeleteMenteeById, middlewares.JWTMiddleware())
 }
