@@ -44,6 +44,11 @@ func (handler *UserHandler) Login(c echo.Context) error {
 }
 
 func (handler *UserHandler) CreateUser(c echo.Context) error {
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "admin" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("unauthorized"))
+	}
+
 	userInput := UserRequest{}
 	errBind := c.Bind(&userInput)
 	if errBind != nil {
@@ -92,8 +97,7 @@ func (handler *UserHandler) GetUserById(c echo.Context) error {
 }
 
 func (handler *UserHandler) UpdateUserProfile(c echo.Context) error {
-	paramId := middlewares.ExtractTokenUserId(c)
-	userId := uint64(paramId)
+	userId := middlewares.ExtractTokenUserId(c)
 
 	userInput := UserRequest{}
 	errBind := c.Bind(&userInput)
@@ -113,6 +117,11 @@ func (handler *UserHandler) UpdateUserProfile(c echo.Context) error {
 }
 
 func (handler *UserHandler) UpdateUserById(c echo.Context) error {
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "admin" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("unauthorized"))
+	}
+
 	paramId := c.Param("id")
 	userId, _ := strconv.ParseUint(paramId, 10, 64)
 
@@ -133,6 +142,11 @@ func (handler *UserHandler) UpdateUserById(c echo.Context) error {
 }
 
 func (handler *UserHandler) DeleteUserById(c echo.Context) error {
+	userRole := middlewares.ExtractTokenUserRole(c)
+	if userRole != "admin" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("unauthorized"))
+	}
+
 	paramId := c.Param("id")
 	userId, _ := strconv.ParseUint(paramId, 10, 64)
 
