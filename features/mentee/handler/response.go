@@ -5,24 +5,24 @@ import (
 )
 
 type MenteeResponse struct {
-	Id              uint64 `json:"id" form:"id"`
-	IdClass         uint64 `json:"id_class" form:"id_class"`
-	FullName        string `json:"full_name" form:"full_name"`
-	NickName        string `json:"nick_name" form:"nick_name"`
-	Email           string `json:"email" form:"email"`
-	Phone           string `json:"phone" form:"phone"`
-	CurrentAddress  string `json:"current_address" form:"current_address"`
-	HomeAddress     string `json:"home_address" form:"home_address"`
-	Telegram        string `json:"telegram" form:"telegram"`
-	IdStatus        uint64 `json:"id_status" form:"id_status"`
-	Gender          string `json:"gender" form:"gender"`
-	EducationType   string `json:"education_type" form:"education_type"`
-	Major           string `json:"major" form:"major"`
-	Graduate        uint32 `json:"graduate" form:"graduate"`
-	Institution     string `json:"institution" form:"institution"`
-	EmergencyName   string `json:"emergency_name" form:"emergency_name"`
-	EmergencyPhone  string `json:"emergency_phone" form:"emergency_phone"`
-	EmergencyStatus string `json:"emergency_status" form:"emergency_status"`
+	Id              uint64 `json:"id,omitempty"`
+	IdClass         uint64 `json:"id_class,omitempty"`
+	FullName        string `json:"full_name,omitempty"`
+	NickName        string `json:"nick_name,omitempty"`
+	Email           string `json:"email,omitempty"`
+	Phone           string `json:"phone,omitempty"`
+	CurrentAddress  string `json:"current_address,omitempty"`
+	HomeAddress     string `json:"home_address,omitempty"`
+	Telegram        string `json:"telegram,omitempty"`
+	IdStatus        uint64 `json:"id_status,omitempty"`
+	Gender          string `json:"gender,omitempty"`
+	EducationType   string `json:"education_type,omitempty"`
+	Major           string `json:"major,omitempty"`
+	Graduate        uint32 `json:"graduate,omitempty"`
+	Institution     string `json:"institution,omitempty"`
+	EmergencyName   string `json:"emergency_name,omitempty"`
+	EmergencyPhone  string `json:"emergency_phone,omitempty"`
+	EmergencyStatus string `json:"emergency_status,omitempty"`
 }
 
 func CoreToGetMenteeResponse(mentee mentee.Core) MenteeResponse {

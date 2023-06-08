@@ -7,18 +7,18 @@ import (
 )
 
 type FeedbackResponse struct {
-	Id       uint64 `json:"id" form:"id"`
-	Notes    string `json:"notes" form:"notes"`
-	Proof    string `json:"proof" form:"proof"`
-	IdUser   uint64 `json:"id_user" form:"id_user"`
-	IdMentee uint64 `json:"id_mentee" form:"id_mentee"`
-	IdStatus uint64 `json:"id_status" form:"id_status"`
-	Approved bool   `json:"approved" form:"approved"`
+	Id       uint64 `json:"id,omitempty"`
+	Notes    string `json:"notes,omitempty"`
+	Proof    string `json:"proof,omitempty"`
+	IdUser   uint64 `json:"id_user,omitempty"`
+	IdMentee uint64 `json:"id_mentee,omitempty"`
+	IdStatus uint64 `json:"id_status,omitempty"`
+	Approved bool   `json:"approved,omitempty"`
 }
 
 type MenteeFeedbacksResponse struct {
 	Mentee    _menteeHandler.MenteeResponse
-	Feedbacks []FeedbackResponse
+	Feedbacks []FeedbackResponse `json:"feedbacks,omitempty"`
 }
 
 func CoreToGetFeedbackResponse(feedback feedback.Core) FeedbackResponse {

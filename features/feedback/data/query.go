@@ -60,10 +60,6 @@ func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core
 		return nil, mentee.Core{}, tx.Error
 	}
 
-	if tx.RowsAffected == 0 {
-		return nil, mentee.Core{}, errors.New("error feedbacks not found")
-	}
-
 	var feedbacksCoreAll []feedback.Core
 	for _, value := range feedbacksData {
 		feedbackCore := ModelToCore(value)

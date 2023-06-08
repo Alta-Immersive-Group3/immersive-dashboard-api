@@ -5,11 +5,11 @@ import (
 )
 
 type ClassResponse struct {
-	Id           uint64 `json:"id" form:"id"`
-	Name         string `json:"name" form:"name"`
-	PIC          uint64 `json:"pic" form:"pic"`
-	StartDate    string `json:"start_date" form:"start_date"`
-	GraduateDate string `json:"graduate_date" form:"graduate_date"`
+	Id           uint64 `json:"id,omitempty"`
+	Name         string `json:"name,omitempty"`
+	PIC          uint64 `json:"pic,omitempty"`
+	StartDate    string `json:"start_date,omitempty"`
+	GraduateDate string `json:"graduate_date,omitempty"`
 }
 
 func CoreToGetClassResponse(class class.Core) ClassResponse {
