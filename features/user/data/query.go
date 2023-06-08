@@ -35,7 +35,7 @@ func (repo *userQuery) Login(email string, password string) (user.Core, string, 
 		return user.Core{}, "", errors.New("login failed, wrong password")
 	}
 
-	token, errToken := middlewares.CreateToken(int(userGorm.Id))
+	token, errToken := middlewares.CreateToken(userGorm.Id, userGorm.Role)
 	if errToken != nil {
 		return user.Core{}, "", errToken
 	}
