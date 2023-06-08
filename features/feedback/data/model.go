@@ -20,10 +20,10 @@ type Feedback struct {
 	Approved  bool
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
-	User      _userData.User
-	Mentee    _menteeData.Mentee
-	Status    _statusData.Status
+	DeletedAt gorm.DeletedAt     `gorm:"index"`
+	User      _userData.User     `gorm:"foreignKey:IdUser"`
+	Mentee    _menteeData.Mentee `gorm:"foreignKey:IdMentee"`
+	Status    _statusData.Status `gorm:"foreignKey:IdStatus"`
 }
 
 func ModelToCore(feedbackData Feedback) feedback.Core {
