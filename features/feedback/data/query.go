@@ -51,6 +51,25 @@ func (repo *feedbackQuery) SelectAll() ([]feedback.Core, error) {
 	return feedbacksCoreAll, nil
 }
 
+func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core, error) {
+	var feedbacksData []Feedback
+	tx := repo.db.Where("IdMentee = ?", idMentee).Find(&feedbacksData)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return nil, errors.New("error feedbacks not found")
+	}
+
+	var feedbacksCoreAll []feedback.Core
+	for _, value := range feedbacksData {
+		feedbackCore := ModelToCore(value)
+		feedbacksCoreAll = append(feedbacksCoreAll, feedbackCore)
+	}
+	return feedbacksCoreAll, nil
+}
+
 func (repo *feedbackQuery) SelectById(id uint64) (feedback.Core, error) {
 	var feedbackGorm Feedback
 	tx := repo.db.First(&feedbackGorm, id)

@@ -5,6 +5,9 @@ import (
 	_classData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/data"
 	_classHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/handler"
 	_classService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/service"
+	_feedbackData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback/data"
+	_feedbackHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback/handler"
+	_feedbackService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback/service"
 	_menteeData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/data"
 	_menteeHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/handler"
 	_menteeService "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/service"
@@ -66,4 +69,14 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	e.GET("/mentees/:id", menteeHandlerAPI.GetMenteeById, middlewares.JWTMiddleware())
 	e.PUT("/mentees/:id", menteeHandlerAPI.UpdateMenteeById, middlewares.JWTMiddleware())
 	e.DELETE("/mentees/:id", menteeHandlerAPI.DeleteMenteeById, middlewares.JWTMiddleware())
+
+	feedbackData := _feedbackData.New(db)
+	feedbackService := _feedbackService.New(feedbackData)
+	feedbackHandlerAPI := _feedbackHandler.New(feedbackService)
+
+	e.POST("/feedbacks", feedbackHandlerAPI.CreateFeedback, middlewares.JWTMiddleware())
+	e.GET("/feedbacks", feedbackHandlerAPI.GetAllFeedback, middlewares.JWTMiddleware())
+	e.GET("/feedbacks/:id", feedbackHandlerAPI.GetFeedbackById, middlewares.JWTMiddleware())
+	e.PUT("/feedbacks/:id", feedbackHandlerAPI.UpdateFeedbackById, middlewares.JWTMiddleware())
+	e.DELETE("/feedbacks/:id", feedbackHandlerAPI.DeleteFeedbackById, middlewares.JWTMiddleware())
 }
