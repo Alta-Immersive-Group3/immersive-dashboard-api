@@ -4,6 +4,8 @@ import (
 	"errors"
 
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback"
+	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee"
+	_menteeData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/data"
 	"gorm.io/gorm"
 )
 
@@ -51,15 +53,15 @@ func (repo *feedbackQuery) SelectAll() ([]feedback.Core, error) {
 	return feedbacksCoreAll, nil
 }
 
-func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core, error) {
+func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core, mentee.Core, error) {
 	var feedbacksData []Feedback
 	tx := repo.db.Where("IdMentee = ?", idMentee).Find(&feedbacksData)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return nil, mentee.Core{}, tx.Error
 	}
 
 	if tx.RowsAffected == 0 {
-		return nil, errors.New("error feedbacks not found")
+		return nil, mentee.Core{}, errors.New("error feedbacks not found")
 	}
 
 	var feedbacksCoreAll []feedback.Core
@@ -67,7 +69,15 @@ func (repo *feedbackQuery) SelectAllByMenteeId(idMentee uint64) ([]feedback.Core
 		feedbackCore := ModelToCore(value)
 		feedbacksCoreAll = append(feedbacksCoreAll, feedbackCore)
 	}
-	return feedbacksCoreAll, nil
+
+	var feedbackData Feedback
+	tx = repo.db.Where("IdMentee = ?", idMentee).Preload("Mentee", "id = ?", idMentee).First(&feedbackData)
+	if tx.Error != nil {
+		return nil, mentee.Core{}, tx.Error
+	}
+
+	menteeCore := _menteeData.ModelToCore(feedbackData.Mentee)
+	return feedbacksCoreAll, menteeCore, nil
 }
 
 func (repo *feedbackQuery) SelectById(id uint64) (feedback.Core, error) {

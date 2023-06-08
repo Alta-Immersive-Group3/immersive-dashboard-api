@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback"
+	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -39,12 +40,12 @@ func (service *feedbackService) GetAll() ([]feedback.Core, error) {
 	return data, err
 }
 
-func (service *feedbackService) GetAllByMenteeId(idMentee uint64) ([]feedback.Core, error) {
-	data, err := service.feedbackData.SelectAllByMenteeId(idMentee)
+func (service *feedbackService) GetAllByMenteeId(idMentee uint64) ([]feedback.Core, mentee.Core, error) {
+	dataFeedbacks, dataMentee, err := service.feedbackData.SelectAllByMenteeId(idMentee)
 	if err != nil {
-		return nil, err
+		return nil, mentee.Core{}, err
 	}
-	return data, err
+	return dataFeedbacks, dataMentee, err
 }
 
 func (service *feedbackService) GetById(id uint64) (feedback.Core, error) {

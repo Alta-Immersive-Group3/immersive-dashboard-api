@@ -1,6 +1,10 @@
 package handler
 
-import "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback"
+import (
+	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback"
+	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee"
+	_menteeHandler "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/handler"
+)
 
 type FeedbackResponse struct {
 	Id       uint64 `json:"id" form:"id"`
@@ -12,6 +16,11 @@ type FeedbackResponse struct {
 	Approved bool   `json:"approved" form:"approved"`
 }
 
+type MenteeFeedbacksResponse struct {
+	Mentee    _menteeHandler.MenteeResponse
+	Feedbacks []FeedbackResponse
+}
+
 func CoreToGetFeedbackResponse(feedback feedback.Core) FeedbackResponse {
 	return FeedbackResponse{
 		Id:       feedback.Id,
@@ -21,5 +30,17 @@ func CoreToGetFeedbackResponse(feedback feedback.Core) FeedbackResponse {
 		IdMentee: feedback.IdMentee,
 		IdStatus: feedback.IdStatus,
 		Approved: feedback.Approved,
+	}
+}
+
+func MenteeFeedbackCoreToResponse(mentee mentee.Core, feedbacks []feedback.Core) MenteeFeedbacksResponse {
+	var feedbacksResponse []FeedbackResponse
+	for _, value := range feedbacks {
+		feedbacksResponse = append(feedbacksResponse, CoreToGetFeedbackResponse(value))
+	}
+
+	return MenteeFeedbacksResponse{
+		Mentee:    _menteeHandler.CoreToGetMenteeResponse(mentee),
+		Feedbacks: feedbacksResponse,
 	}
 }
