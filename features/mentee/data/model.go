@@ -6,6 +6,7 @@ import (
 	_classData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/data"
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee"
 	_statusData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/status/data"
+	"gorm.io/gorm"
 )
 
 type Mentee struct {
@@ -29,6 +30,7 @@ type Mentee struct {
 	EmergencyStatus string `gorm:"enum('orang tua', 'saudara kandung', 'kakek nenek', 'keluarga')"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
+	DeletedAt       gorm.DeletedAt     `gorm:"index"`
 	Class           _classData.Class   `gorm:"foreignKey:IdClass"`
 	Status          _statusData.Status `gorm:"foreignKey:IdStatus"`
 }

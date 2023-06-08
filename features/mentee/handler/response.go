@@ -26,6 +26,7 @@ type MenteeResponse struct {
 
 func CoreToGetMenteeResponse(mentee mentee.Core) MenteeResponse {
 	return MenteeResponse{
+		Id:              mentee.Id,
 		FullName:        mentee.FullName,
 		NickName:        mentee.NickName,
 		Email:           mentee.Email,
