@@ -55,11 +55,24 @@ func (handler *feedbackHandler) GetAllFeedback(c echo.Context) error {
 	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", FeedbacksResponse))
 }
 
+func (handler *feedbackHandler) GetAllMenteeFeedback(c echo.Context) error {
+	paramId := c.Param("id")
+	menteeId, _ := strconv.ParseUint(paramId, 10, 64)
+
+	feedbacks, mentee, err := handler.feedbackService.GetAllByMenteeId(menteeId)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error read data, "+err.Error()))
+	}
+
+	FeedbacksResponse := MenteeFeedbackCoreToResponse(mentee, feedbacks)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", FeedbacksResponse))
+}
+
 func (handler *feedbackHandler) GetFeedbackById(c echo.Context) error {
 	paramId := c.Param("id")
-	FeedbackId, _ := strconv.ParseUint(paramId, 10, 64)
+	feedbackId, _ := strconv.ParseUint(paramId, 10, 64)
 
-	result, err := handler.feedbackService.GetById(FeedbackId)
+	result, err := handler.feedbackService.GetById(feedbackId)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, helper.FailedResponse("error read data, "+err.Error()))
 	}
