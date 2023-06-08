@@ -39,6 +39,14 @@ func (service *feedbackService) GetAll() ([]feedback.Core, error) {
 	return data, err
 }
 
+func (service *feedbackService) GetAllByMenteeId(idMentee uint64) ([]feedback.Core, error) {
+	data, err := service.feedbackData.SelectAllByMenteeId(idMentee)
+	if err != nil {
+		return nil, err
+	}
+	return data, err
+}
+
 func (service *feedbackService) GetById(id uint64) (feedback.Core, error) {
 	data, err := service.feedbackData.SelectById(id)
 	if err != nil {

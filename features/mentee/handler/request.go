@@ -5,6 +5,7 @@ import (
 )
 
 type MenteeRequest struct {
+	IdClass         uint64 `json:"id_class" form:"id_class"`
 	FullName        string `json:"full_name" form:"full_name"`
 	NickName        string `json:"nick_name" form:"nick_name"`
 	Email           string `json:"email" form:"email"`
@@ -25,6 +26,7 @@ type MenteeRequest struct {
 
 func MenteeRequestToCore(menteeRequest MenteeRequest) mentee.Core {
 	return mentee.Core{
+		IdClass:         menteeRequest.IdClass,
 		FullName:        menteeRequest.FullName,
 		NickName:        menteeRequest.NickName,
 		Email:           menteeRequest.Email,

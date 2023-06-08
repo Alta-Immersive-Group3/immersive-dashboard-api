@@ -1,6 +1,8 @@
 package mentee
 
-import "time"
+import (
+	"time"
+)
 
 type Core struct {
 	Id              uint64
