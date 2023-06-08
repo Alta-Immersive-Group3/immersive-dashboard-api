@@ -27,13 +27,18 @@ func (service *userService) Login(email string, password string) (user.Core, str
 	return dataLogin, token, err
 }
 
-func (service *userService) Create(input user.Core) error {
+func (service *userService) Create(input user.Core) (user.Core, error) {
 	errValidate := service.validate.Struct(input)
 	if errValidate != nil {
-		return errValidate
+		return user.Core{}, errValidate
 	}
-	errInsert := service.userData.Insert(input)
-	return errInsert
+
+	id, errInsert := service.userData.Insert(input)
+	if errInsert != nil {
+		return user.Core{}, errInsert
+	}
+
+	return service.GetById(id)
 }
 
 func (service *userService) GetAll() ([]user.Core, error) {
@@ -52,13 +57,13 @@ func (service *userService) GetById(id uint64) (user.Core, error) {
 	return data, err
 }
 
-func (service *userService) UpdateById(id uint64, input user.Core) error {
+func (service *userService) UpdateById(id uint64, input user.Core) (user.Core, error) {
 	errUpdate := service.userData.UpdateById(id, input)
 	if errUpdate != nil {
-		return errUpdate
+		return user.Core{}, errUpdate
 	}
 
-	return nil
+	return service.GetById(id)
 }
 
 func (service *userService) DeleteById(id uint64) error {

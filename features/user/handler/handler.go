@@ -51,7 +51,7 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 	}
 
 	userCore := UserRequestToCore(userInput)
-	err := handler.userService.Create(userCore)
+	result, err := handler.userService.Create(userCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "validation") {
 			return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
@@ -59,7 +59,9 @@ func (handler *UserHandler) CreateUser(c echo.Context) error {
 			return c.JSON(http.StatusInternalServerError, helper.FailedResponse("error insert data, "+err.Error()))
 		}
 	}
-	return c.JSON(http.StatusOK, helper.SuccessResponse("success insert data"))
+
+	userResponse := CoreToGetUserResponse(result)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success read data", userResponse))
 }
 
 func (handler *UserHandler) GetAllUser(c echo.Context) error {
@@ -100,12 +102,14 @@ func (handler *UserHandler) UpdateUserProfile(c echo.Context) error {
 	}
 
 	userCore := UserRequestToCore(userInput)
-	err := handler.userService.UpdateById(userId, userCore)
+	result, err := handler.userService.UpdateById(userId, userCore)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data, "+err.Error()))
 	}
-	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
+
+	userResponse := CoreToGetUserResponse(result)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success update data", userResponse))
 }
 
 func (handler *UserHandler) UpdateUserById(c echo.Context) error {
@@ -119,12 +123,13 @@ func (handler *UserHandler) UpdateUserById(c echo.Context) error {
 	}
 
 	userCore := UserRequestToCore(userInput)
-	err := handler.userService.UpdateById(userId, userCore)
-
+	result, err := handler.userService.UpdateById(userId, userCore)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error update data, "+err.Error()))
 	}
-	return c.JSON(http.StatusOK, helper.SuccessResponse("success update data"))
+
+	userResponse := CoreToGetUserResponse(result)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success update data", userResponse))
 }
 
 func (handler *UserHandler) DeleteUserById(c echo.Context) error {
