@@ -4,6 +4,10 @@ import (
 	"fmt"
 
 	"github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/app/config"
+	_classData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/class/data"
+	_feedbackData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/feedback/data"
+	_menteeData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/mentee/data"
+	_statusData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/status/data"
 	_teamData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/team/data"
 	_userData "github.com/ALTA-Immersive-Group3/immersive-dahsboard-api/features/user/data"
 	"gorm.io/driver/mysql"
@@ -24,5 +28,5 @@ func InitDBMysql(cfg *config.AppConfig) *gorm.DB {
 }
 
 func InitialMigration(db *gorm.DB) {
-	db.AutoMigrate(&_teamData.Team{}, &_userData.User{})
+	db.AutoMigrate(&_teamData.Team{}, &_userData.User{}, &_classData.Class{}, &_statusData.Status{}, &_menteeData.Mentee{}, &_feedbackData.Feedback{})
 }

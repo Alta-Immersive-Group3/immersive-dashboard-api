@@ -1,23 +1,29 @@
 package helper
 
-func FailedResponse(message string) map[string]any {
-	return map[string]any{
-		"status":  "failed",
-		"message": message,
+type Response struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+	Data    any    `json:"data,omitempty"`
+}
+
+func FailedResponse(message string) Response {
+	return Response{
+		Status:  "failed",
+		Message: message,
 	}
 }
 
-func SuccessResponse(message string) map[string]any {
-	return map[string]any{
-		"status":  "success",
-		"message": message,
+func SuccessResponse(message string) Response {
+	return Response{
+		Status:  "success",
+		Message: message,
 	}
 }
 
-func SuccessWithDataResponse(message string, data any) map[string]any {
-	return map[string]any{
-		"status":  "success",
-		"message": message,
-		"data":    data,
+func SuccessWithDataResponse(message string, data any) Response {
+	return Response{
+		Status:  "success",
+		Message: message,
+		Data:    data,
 	}
 }
